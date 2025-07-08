@@ -1,0 +1,6 @@
+<map id="include/serdes/serdes.hpp" name="include/serdes/serdes.hpp">
+<area shape="rect" id="node1" title="Core serialization and deserialization logic (header)." alt="" coords="204,5,395,32"/>
+<area shape="rect" id="node2" href="$deserialize__cmd_8cpp.html" title="Implementation of DeserializeCmd." alt="" coords="5,80,191,121"/>
+<area shape="rect" id="node3" href="$serialize__cmd_8cpp.html" title="Implementation of SerializeCmd." alt="" coords="215,80,384,121"/>
+<area shape="rect" id="node4" href="$serdes_8cpp.html" title="Implementation of serialization/deserialization functions." alt="" coords="409,87,571,114"/>
+</map>

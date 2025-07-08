@@ -1,0 +1,4 @@
+<map id="serdes::serialize" name="serdes::serialize">
+<area shape="rect" id="node1" title="Serializes a list of fields into a single escaped line." alt="" coords="5,5,133,32"/>
+<area shape="rect" id="node2" href="$namespaceserdes.html#aaed314c8960ebf249cfd98d493fd94fd" title="Validate delimiter and escape characters for use in serialization." alt="" coords="181,5,364,32"/>
+</map>

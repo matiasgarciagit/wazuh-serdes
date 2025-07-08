@@ -1,0 +1,6 @@
+<map id="main" name="main">
+<area shape="rect" id="node1" title="Program entry&#45;point." alt="" coords="5,31,60,57"/>
+<area shape="rect" id="node2" href="$namespaceCli.html#a6ad4b04c4cf1c762ecf8efbfc766218f" title=" " alt="" coords="128,5,211,32"/>
+<area shape="rect" id="node4" href="$classSerDesApp.html#aa02fe32d841dd99840c0d32fd772b098" title="Run the selected command." alt="" coords="108,56,231,83"/>
+<area shape="rect" id="node3" href="$namespaceCli.html#aea322c6b38d0010224085c836e741ba9" title="Local helper: validator that enforces exactly one UTF&#45;8 code unit." alt="" coords="279,5,449,32"/>
+</map>

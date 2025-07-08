@@ -9,6 +9,8 @@
 #include <istream>
 #include <string>
 
+SerializeCmd::SerializeCmd(const SerializeOptions &opts): opts_(opts) {}
+
 int SerializeCmd::execute(std::istream& in, std::ostream& out) {
 
     try {

@@ -3,7 +3,7 @@
  * \brief Command for deserializing a single escaped input line into multiple fields.
  */
 #pragma once
-#include "command/command.hpp"
+#include "command/icommand.hpp"
 #include "options/options.hpp"
 
 /**

@@ -1,6 +1,12 @@
-//
-// Created by mgarcia on 07/07/25.
-//
+/**
+* \file cli.cpp
+ * \brief Implementation of the CLI parser using CLI11.
+ *
+ * Configures global flags, user options, and the
+ * `serialize` / `deserialize` subcommands. Handles
+ * parsing errors by printing help or version info
+ * and exiting with the appropriate code.
+ */
 
 #include "app/version.hpp"
 #include "options/cli/cli.hpp"
@@ -13,17 +19,29 @@ namespace Cli {
     static constexpr auto kProgramName = app::info::name;
     static constexpr auto kProgramVer  = app::info::version;
 
-/// Local helper: validator that enforces *exactly* one UTF-8 code unit.
-static CLI::Validator one_char_validator() {
-    return {
-        [](const std::string &s) {
-            return s.size() == 1
-                       ? std::string{}
-                       : std::string{"delimiter must be a single ASCII character"};
-        },
-        "CHAR", "char_len_1"
-    };
-}
+    // anonymous namespace = internal linkage for implementation details
+    namespace {
+
+        /**
+         * \brief Validator helper enforcing exactly one UTF-8 code unit.
+         *
+         * Used for the `-d,--delim` option to ensure the user
+         * provides exactly one printable ASCII character.
+         *
+         * \return A `CLI::Validator` that checks `s.size() == 1`.
+         */
+        CLI::Validator one_char_validator() {
+            return {
+                [](const std::string &s) {
+                    return s.size() == 1
+                           ? std::string{}
+                    : std::string{"delimiter must be a single ASCII character"};
+                },
+                "CHAR", "char_len_1"
+            };
+        }
+
+    }
 
     Options parse(const int argc, char** argv) {
     CLI::App app;

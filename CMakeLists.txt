@@ -1,20 +1,19 @@
 cmake_minimum_required(VERSION 3.31)
 project(wazuh-serdes VERSION 0.1.0 LANGUAGES CXX)
+
+# Compiler configuration
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS     OFF)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#Define and configure VERSION_HEADER
-set(VERSION_HEADER_IN   "${CMAKE_SOURCE_DIR}/cmake/version.hpp.in")
-set(VERSION_HEADER_OUT  "${CMAKE_BINARY_DIR}/include/app/version.hpp")
+# Generated version header
+set(VERSION_HEADER_IN  "${CMAKE_SOURCE_DIR}/cmake/version.hpp.in")
+set(VERSION_HEADER_OUT "${CMAKE_BINARY_DIR}/include/app/version.hpp")
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/include/app")
-configure_file(
-        "${VERSION_HEADER_IN}"
-        "${VERSION_HEADER_OUT}"
-        @ONLY
-)
+configure_file("${VERSION_HEADER_IN}" "${VERSION_HEADER_OUT}" @ONLY)
 
+# External dependencies
 include(FetchContent)
 
 FetchContent_Declare(
@@ -28,56 +27,85 @@ FetchContent_MakeAvailable(cli11)
 FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG        v1.14.0
+        GIT_TAG        v1.17.0
         GIT_SHALLOW    TRUE
 )
 FetchContent_MakeAvailable(googletest)
 enable_testing()
 
-add_executable(wazuh-serdes
-        src/main.cpp
-        src/options/cli/cli.cpp
-        src/serdes/serdes_app.cpp
-        src/command/serialize_cmd.cpp
-        src/command/deserialize_cmd.cpp
-
-        include/options/cli/cli.hpp
-        include/options/options.hpp
-        include/serdes/serdes_app.hpp
-        include/serdes/serdes.hpp
-        include/command/command.hpp
-        include/command/deserialize_cmd.hpp
-        include/command/serialize_cmd.hpp
-)
-target_include_directories(wazuh-serdes
-        PRIVATE
-        ${CMAKE_BINARY_DIR}/include
-        ${PROJECT_SOURCE_DIR}/include)
-
-target_link_libraries(wazuh-serdes
-        PRIVATE
-        CLI11::CLI11)
-
-target_compile_options(wazuh-serdes PRIVATE
+# Common warning flags
+set(PROJECT_WARNINGS
         -Wall -Wextra -Wpedantic -Werror
         -Wshadow -Wnon-virtual-dtor -Wold-style-cast
         -Wcast-align -Wunused -Wformat=2
 )
 
-#--- Test executable ---
-add_executable(wazuh-serdes-tests
-        test/serdes_test.cpp
+# Internal library: serdes core logic
+add_library(libserdes STATIC
+        src/serdes/serdes.cpp
 )
-
-target_include_directories(wazuh-serdes-tests
-        PRIVATE
+target_include_directories(libserdes PUBLIC
         ${PROJECT_SOURCE_DIR}/include
         ${CMAKE_BINARY_DIR}/include
 )
+target_compile_options(libserdes PRIVATE ${PROJECT_WARNINGS})
 
+# Internal library: command layer (serialize/deserialize)
+add_library(libcommand STATIC
+        src/command/serialize_cmd.cpp
+        src/command/deserialize_cmd.cpp
+)
+target_link_libraries(libcommand PUBLIC libserdes)
+target_include_directories(libcommand PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_compile_options(libcommand PRIVATE ${PROJECT_WARNINGS})
+
+# Internal library: CLI parser
+add_library(libcli STATIC
+        src/options/cli/cli.cpp
+)
+target_link_libraries(libcli PUBLIC CLI11::CLI11)
+target_include_directories(libcli PUBLIC
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+)
+target_compile_options(libcli PRIVATE ${PROJECT_WARNINGS})
+
+# Internal library: application coordinator
+add_library(libapp STATIC
+        src/serdes/serdes_app.cpp
+)
+target_link_libraries(libapp PUBLIC libcommand libcli)
+target_include_directories(libapp PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_compile_options(libapp PRIVATE ${PROJECT_WARNINGS})
+
+# Main executable (entry point only)
+add_executable(wazuh-serdes
+        src/main.cpp
+)
+target_link_libraries(wazuh-serdes PRIVATE libapp)
+target_include_directories(wazuh-serdes PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+)
+target_compile_options(wazuh-serdes PRIVATE ${PROJECT_WARNINGS})
+
+# Test executable: includes all .cpp files except main.cpp
+file(GLOB_RECURSE ALL_SRC CONFIGURE_DEPENDS src/*.cpp)
+list(REMOVE_ITEM ALL_SRC "${PROJECT_SOURCE_DIR}/src/main.cpp")
+
+add_executable(wazuh-serdes-tests
+        test/serdes_test.cpp
+        ${ALL_SRC}
+)
 target_link_libraries(wazuh-serdes-tests
         PRIVATE
         gtest_main
+        CLI11::CLI11
 )
+target_include_directories(wazuh-serdes-tests PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+)
+target_compile_options(wazuh-serdes-tests PRIVATE ${PROJECT_WARNINGS})
 
 add_test(NAME SerDesTests COMMAND wazuh-serdes-tests)

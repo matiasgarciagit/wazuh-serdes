@@ -4,7 +4,7 @@
  */
 
 #pragma once
-#include "command/command.hpp"
+#include "command/icommand.hpp"
 #include "options/options.hpp"
 
 /**
@@ -22,8 +22,7 @@ public:
  * \brief Construct a serialization command.
  * \param opts User-selected serialization options.
  */
-    explicit SerializeCmd(const SerializeOptions& opts)
-      : opts_(opts) {}
+    explicit SerializeCmd(const SerializeOptions& opts);
 
     /**
      * \brief Execute serialization from input to output.

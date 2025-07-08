@@ -1,0 +1,4 @@
+<map id="serdes::serialize" name="serdes::serialize">
+<area shape="rect" id="node1" title="Serializes a list of fields into a single escaped line." alt="" coords="220,5,348,32"/>
+<area shape="rect" id="node2" href="$classSerializeCmd.html#a90520b43b3d8845c453d6fb8dd61c2b2" title="Execute serialization from input to output." alt="" coords="5,5,172,32"/>
+</map>
