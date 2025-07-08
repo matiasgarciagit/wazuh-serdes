@@ -1,6 +1,7 @@
-//
-// Created by mgarcia on 07/07/25.
-//
+/**
+* \file serdes.cpp
+ * \brief Implementation of serialization/deserialization functions.
+ */
 
 #include "serdes/serdes.hpp"
 #include <stdexcept>

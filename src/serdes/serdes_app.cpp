@@ -1,6 +1,7 @@
-//
-// Created by mgarcia on 07/07/25.
-//
+/**
+* \file serdes_app.cpp
+ * \brief Implementation of the SerDesApp class.
+ */
 
 #include "serdes/serdes_app.hpp"
 #include "command/serialize_cmd.hpp"

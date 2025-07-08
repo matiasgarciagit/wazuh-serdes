@@ -1,8 +1,28 @@
+/**
+* \file main.cpp
+ * \brief Entry-point for the SerDes utility.
+ *
+ * This file wires together command-line parsing and the core
+ * serializer/deserializer application object (`SerDesApp`).
+ */
+
 #include <iostream>
 
 #include "options/cli/cli.hpp"
 #include "serdes/serdes_app.hpp"
 
+/**
+ * \brief Program entry-point.
+ *
+ * Parses CLI options and launches the application.  All
+ * user-visible errors are printed to `stderr`; any exception
+ * escaping `SerDesApp::run()` terminates the program with
+ * an exit code of 1.
+ *
+ * \param argc Argument count.
+ * \param argv Argument vector.
+ * \return 0 on success, non-zero on failure.
+ */
 int main(const int argc, char** argv)
 {
     try {

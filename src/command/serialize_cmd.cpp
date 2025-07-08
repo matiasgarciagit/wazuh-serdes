@@ -1,6 +1,7 @@
-//
-// Created by mgarcia on 07/07/25.
-//
+/**
+* \file serialize_cmd.cpp
+ * \brief Implementation of SerializeCmd.
+ */
 
 #include "command/serialize_cmd.hpp"
 #include "serdes/serdes.hpp"
@@ -28,7 +29,7 @@ int SerializeCmd::execute(std::istream& in, std::ostream& out) {
         fields.push_back(std::move(line));
     }
 
-    // Raw mode: join fields without any escaping
+    // Disable escaping (raw join)
     if (opts_.disable_escape) {
         if (fields.empty()) {
             return 0;
@@ -41,7 +42,6 @@ int SerializeCmd::execute(std::istream& in, std::ostream& out) {
         return 0;
     }
 
-    // Escaping mode: delegate to pure serializer
     try {
         const auto serialized = serdes::serialize(fields, opts_.delim, '\\');
         out << serialized;

@@ -25,20 +25,30 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cli11)
 
-add_executable(wazuh-serdes src/main.cpp
-        include/options/cli/cli.hpp
-        include/options/options.hpp
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        v1.14.0
+        GIT_SHALLOW    TRUE
+)
+FetchContent_MakeAvailable(googletest)
+enable_testing()
+
+add_executable(wazuh-serdes
+        src/main.cpp
         src/options/cli/cli.cpp
         src/serdes/serdes_app.cpp
-        include/serdes/serdes_app.hpp
-        include/command/command.hpp
         src/command/serialize_cmd.cpp
         src/command/deserialize_cmd.cpp
+
+        include/options/cli/cli.hpp
+        include/options/options.hpp
+        include/serdes/serdes_app.hpp
+        include/serdes/serdes.hpp
+        include/command/command.hpp
         include/command/deserialize_cmd.hpp
         include/command/serialize_cmd.hpp
-        include/serdes/serdes.hpp
-        src/serdes/serdes.cpp)
-
+)
 target_include_directories(wazuh-serdes
         PRIVATE
         ${CMAKE_BINARY_DIR}/include
@@ -53,3 +63,21 @@ target_compile_options(wazuh-serdes PRIVATE
         -Wshadow -Wnon-virtual-dtor -Wold-style-cast
         -Wcast-align -Wunused -Wformat=2
 )
+
+#--- Test executable ---
+add_executable(wazuh-serdes-tests
+        test/serdes_test.cpp
+)
+
+target_include_directories(wazuh-serdes-tests
+        PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+        ${CMAKE_BINARY_DIR}/include
+)
+
+target_link_libraries(wazuh-serdes-tests
+        PRIVATE
+        gtest_main
+)
+
+add_test(NAME SerDesTests COMMAND wazuh-serdes-tests)
