@@ -1,5 +1,0 @@
-<map id="include/command/serialize_cmd.hpp" name="include/command/serialize_cmd.hpp">
-<area shape="rect" id="node1" title="Command for serializing multiple input lines into one escaped output line." alt="" coords="94,5,291,47"/>
-<area shape="rect" id="node2" href="$serialize__cmd_8cpp.html" title="Implementation of SerializeCmd." alt="" coords="5,95,175,136"/>
-<area shape="rect" id="node3" href="$serdes__app_8cpp.html" title="Implementation of the SerDesApp class." alt="" coords="199,102,392,129"/>
-</map>

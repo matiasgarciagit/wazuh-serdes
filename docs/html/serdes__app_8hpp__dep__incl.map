@@ -1,5 +1,0 @@
-<map id="include/serdes/serdes_app.hpp" name="include/serdes/serdes_app.hpp">
-<area shape="rect" id="node1" title="Entry point class for the serialization/deserialization logic." alt="" coords="63,5,226,47"/>
-<area shape="rect" id="node2" href="$main_8cpp.html" title="Entry&#45;point for the SerDes utility." alt="" coords="5,95,111,121"/>
-<area shape="rect" id="node3" href="$serdes__app_8cpp.html" title="Implementation of the SerDesApp class." alt="" coords="135,95,328,121"/>
-</map>

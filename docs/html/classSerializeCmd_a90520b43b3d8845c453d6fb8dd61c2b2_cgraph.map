@@ -1,5 +1,0 @@
-<map id="SerializeCmd::execute" name="SerializeCmd::execute">
-<area shape="rect" id="node1" title="Execute serialization from input to output." alt="" coords="5,31,172,57"/>
-<area shape="rect" id="node2" href="$namespaceserdes.html#ac2f867793f5f0b764e2cac30920efea9" title="Serializes a list of fields into a single escaped line." alt="" coords="220,5,348,32"/>
-<area shape="rect" id="node3" href="$namespaceserdes.html#aaed314c8960ebf249cfd98d493fd94fd" title="Validate delimiter and escape characters for use in serialization." alt="" coords="396,31,579,57"/>
-</map>

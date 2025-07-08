@@ -1,8 +1,0 @@
-<map id="include/serdes/serdes_app.hpp" name="include/serdes/serdes_app.hpp">
-<area shape="rect" id="node1" title="Entry point class for the serialization/deserialization logic." alt="" coords="208,5,371,47"/>
-<area shape="rect" id="node2" href="$command_8hpp.html" title="Abstract command interface for serialization/deserialization operations." alt="" coords="5,95,189,121"/>
-<area shape="rect" id="node4" href="$options_8hpp.html" title="Command&#45;line options model." alt="" coords="214,95,365,121"/>
-<area shape="rect" id="node6" title=" " alt="" coords="389,95,467,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="59,169,135,196"/>
-<area shape="rect" id="node5" title=" " alt="" coords="255,169,323,196"/>
-</map>

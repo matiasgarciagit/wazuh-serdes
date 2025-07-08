@@ -1,5 +1,0 @@
-<map id="ICommand" name="ICommand">
-<area shape="rect" id="node1" title="Base interface for all executable commands." alt="" coords="92,5,185,32"/>
-<area shape="rect" id="node2" href="$classDeserializeCmd.html" title="Command that deserializes one line of input into individual fields." alt="" coords="5,80,131,107"/>
-<area shape="rect" id="node3" href="$classSerializeCmd.html" title="Command that serializes multiple input lines into a single escaped output line." alt="" coords="155,80,263,107"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SerializeCmd" name="SerializeCmd">
-<area shape="rect" id="node1" title="Command that serializes multiple input lines into a single escaped output line." alt="" coords="65,95,173,121"/>
-<area shape="rect" id="node2" href="$classICommand.html" title="Base interface for all executable commands." alt="" coords="5,5,99,32"/>
-<area shape="rect" id="node3" href="$structSerializeOptions.html" title="Options for serialization mode." alt="" coords="123,5,251,32"/>
-</map>
