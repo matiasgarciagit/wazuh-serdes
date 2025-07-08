@@ -24,66 +24,71 @@ static CLI::Validator one_char_validator() {
     };
 }
 
-Options parse(const int argc, char **argv)
-{
-    CLI::App app{
-        std::string{kProgramName} +
-        " — serialize/deserialize text fields with reversible escaping"};
+    Options parse(const int argc, char** argv) {
+    CLI::App app;
+    // description + version
+    app.description(
+        std::string(kProgramName) +
+        " — serialize/deserialize text fields with reversible escaping (v" +
+        std::string(kProgramVer) + ")"
+    );
 
-    /* ── global flags ──────────────────────────────────────────────── */
-    bool show_version{false};
-    app.set_help_flag("-h,--help", "Show this help message and exit");
-    app.add_flag("-v,-V,--version", show_version,
-                 "Show program version and exit")
-       ->group("Generic options");
+    // Flags
+    app.set_help_flag("-h,--help", "Show this help message and exit")
+       ->group("FLAGS");
+    app.set_version_flag("-v,-V,--version", static_cast<std::string>(kProgramVer),
+        "Show program version and exit")
+       ->group("FLAGS");
 
-    /* ── serialize sub-commands ──────────────────────────────────────────────── */
-    auto* cmd_ser = app.add_subcommand("serialize", "Emit one línea serializada");
-    char  ser_delim           = ',';
-    bool  ser_disable_escape  = false;
-    cmd_ser->add_option("-d,--delim", ser_delim,
-                        "Delimiter character")
-          ->check(one_char_validator());
-    cmd_ser->add_flag("--no-escape", ser_disable_escape,
-                      "Disable escaping (raw mode)");
+    // Global options
+    char delim = ',';
+    bool disable_escape = false;
+    app.add_option("-d,--delim", delim,
+        "Field delimiter character (default ',')")
+       ->type_name("CHAR")
+       ->check(one_char_validator())
+       ->group("OPTIONS");
+    app.add_flag("--no-escape", disable_escape,
+        "Disable escaping (not reversible; only works with 'serialize'; "
+        "useful for debugging or benchmarking)")
+       ->group("OPTIONS");
 
-    /* ── deserialize sub-commands ──────────────────────────────────────────────── */
-    auto* cmd_des = app.add_subcommand("deserialize", "Emit un campo por línea");
-    char des_delim = ',';
-    cmd_des->add_option("-d,--delim", des_delim,
-                        "Delimiter character")
-           ->check(one_char_validator());
+    // Usage y groups
+    app.usage([&](){
+        std::ostringstream oss;
+        oss << "Usage:\n"
+            << "  " << kProgramName << " [FLAGS] [OPTIONS] [SUBCOMMANDS]";
+        return oss.str();
+    });
+    auto fmt = app.get_formatter();
+    fmt->label("Flags",      "FLAGS:");
+    fmt->label("Options",    "OPTIONS:");
+    fmt->label("Subcommands","SUBCOMMANDS:");
 
+    // add_subcommands
+    const auto* cmd_ser = app.add_subcommand("serialize",
+        "Read lines from stdin and output one escaped line to stdout");
+    const auto* cmd_des = app.add_subcommand("deserialize",
+        "Read one escaped line from stdin and output one field per line");
 
-    /* ── parse argv  ────────────────────────────────────────────── */
+    // Parse
     try {
-        app.parse(argc, argv);                 // may throw ParseError / CallForHelp
-    }
-    catch (const CLI::ParseError &e) {
-        std::exit(app.exit(e, std::cout, std::cerr));  // prints help or error
-    }
-
-    /* ── --version early exit ──────────────────────────────────── */
-    if (show_version) {
-        std::cout << kProgramName << ' ' << kProgramVer << '\n';
-        std::exit(EXIT_SUCCESS);
+        app.parse(argc, argv);
+    } catch (const CLI::ParseError &e) {
+        std::exit(app.exit(e));
     }
 
-    /* ── no sub-command?  behave as --help ─────────────────────── */
     if (!*cmd_ser && !*cmd_des) {
         std::exit(app.exit(CLI::CallForHelp{}, std::cout, std::cerr));
     }
 
-    // map chosen sub-command
+    // Map result
     if (*cmd_ser) {
-        SerializeOptions so;
-        so.delim          = ser_delim;
-        so.disable_escape = ser_disable_escape;
-        return Options{ Mode::Serialize, so };
+        return Options{ Mode::Serialize,
+            SerializeOptions{delim, disable_escape} };
     } else {
-        DeserializeOptions dopt;
-        dopt.delim = des_delim;
-        return Options{ Mode::Deserialize, dopt };
+        return Options{ Mode::Deserialize,
+            DeserializeOptions{delim} };
     }
 }
 
