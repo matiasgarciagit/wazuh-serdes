@@ -3,6 +3,7 @@ project(wazuh-serdes VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS     OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 #Define and configure VERSION_HEADER
 set(VERSION_HEADER_IN   "${CMAKE_SOURCE_DIR}/cmake/version.hpp.in")
@@ -46,3 +47,9 @@ target_include_directories(wazuh-serdes
 target_link_libraries(wazuh-serdes
         PRIVATE
         CLI11::CLI11)
+
+target_compile_options(wazuh-serdes PRIVATE
+        -Wall -Wextra -Wpedantic -Werror
+        -Wshadow -Wnon-virtual-dtor -Wold-style-cast
+        -Wcast-align -Wunused -Wformat=2
+)
