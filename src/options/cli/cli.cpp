@@ -2,6 +2,7 @@
 // Created by mgarcia on 07/07/25.
 //
 
+#include "app/version.hpp"
 #include "options/cli/cli.hpp"
 #include <CLI/CLI.hpp>
 #include <CLI/Error.hpp>
@@ -9,8 +10,8 @@
 
 namespace Cli {
 
-constexpr std::string_view kProgramName   = "wazuh-serdes";
-constexpr std::string_view kProgramVer    = "0.1.0";
+    static constexpr auto kProgramName = app::info::name;
+    static constexpr auto kProgramVer  = app::info::version;
 
 /// Local helper: validator that enforces *exactly* one UTF-8 code unit.
 static CLI::Validator one_char_validator() {

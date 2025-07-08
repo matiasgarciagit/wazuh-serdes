@@ -1,8 +1,18 @@
 cmake_minimum_required(VERSION 3.31)
-project(wazuh-serdes)
+project(wazuh-serdes VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS     OFF)
+
+#Define and configure VERSION_HEADER
+set(VERSION_HEADER_IN   "${CMAKE_SOURCE_DIR}/cmake/version.hpp.in")
+set(VERSION_HEADER_OUT  "${CMAKE_BINARY_DIR}/include/app/version.hpp")
+file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/include/app")
+configure_file(
+        "${VERSION_HEADER_IN}"
+        "${VERSION_HEADER_OUT}"
+        @ONLY
+)
 
 include(FetchContent)
 
@@ -30,8 +40,8 @@ add_executable(wazuh-serdes src/main.cpp
 
 target_include_directories(wazuh-serdes
         PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
-        ${libcsv_SOURCE_DIR}/include)
+        ${CMAKE_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include)
 
 target_link_libraries(wazuh-serdes
         PRIVATE
