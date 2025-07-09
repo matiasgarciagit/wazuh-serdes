@@ -1,5 +1,5 @@
 /**
-* \file serialize_cmd.hpp
+ * \file serialize_cmd.hpp
  * \brief Command for serializing multiple input lines into one escaped output line.
  */
 
@@ -15,14 +15,14 @@
  * and joins them using the configured delimiter.
  */
 class SerializeCmd : public ICommand {
-    SerializeOptions opts_;  ///< Options specific to serialization mode.
+    SerializeOptions opts_; ///< Options specific to serialization mode.
 
-public:
+  public:
     /**
- * \brief Construct a serialization command.
- * \param opts User-selected serialization options.
- */
-    explicit SerializeCmd(const SerializeOptions& opts);
+     * \brief Construct a serialization command.
+     * \param opts User-selected serialization options.
+     */
+    explicit SerializeCmd(const SerializeOptions &opts);
 
     /**
      * \brief Execute serialization from input to output.
@@ -34,5 +34,5 @@ public:
      * \param out Output stream to write the serialized result.
      * \return 0 on success, 1 on configuration or logic error.
      */
-    int execute(std::istream& in, std::ostream& out) override;
+    auto execute(std::istream &in, std::ostream &out) -> int override;
 };

@@ -1,5 +1,5 @@
 /**
-* \file serialize_cmd.cpp
+ * \file serialize_cmd.cpp
  * \brief Implementation of SerializeCmd.
  */
 
@@ -8,13 +8,13 @@
 #include <istream>
 #include <string>
 
-SerializeCmd::SerializeCmd(const SerializeOptions &opts): opts_(opts) {}
+SerializeCmd::SerializeCmd(const SerializeOptions &opts) : opts_(opts) {}
 
-int SerializeCmd::execute(std::istream& in, std::ostream& out) {
+auto SerializeCmd::execute(std::istream &in, std::ostream &out) -> int {
 
     try {
-        serdes::validate_params(opts_.delim, '\\');  // same checks as in serdes::serialize
-    } catch (const std::exception& e) {
+        serdes::validate_params(opts_.delim, '\\'); // same checks as in serdes::serialize
+    } catch (const std::exception &e) {
         out << "error: " << e.what() << '\n';
         return 1;
     }
@@ -26,7 +26,7 @@ int SerializeCmd::execute(std::istream& in, std::ostream& out) {
     while (true) {
         std::getline(in, line);
         if (in.fail())
-            break;                // no more lines (or an error)
+            break; // no more lines (or an error)
         fields.push_back(std::move(line));
     }
 
@@ -36,17 +36,18 @@ int SerializeCmd::execute(std::istream& in, std::ostream& out) {
             return 0;
         }
         for (size_t i = 0; i < fields.size(); ++i) {
-            if (i) out.put(opts_.delim);         // write delimiter
+            if (i)
+                out.put(opts_.delim); // write delimiter
             out << fields[i];
         }
-        out.put('\n');                          // terminate with newline
+        out.put('\n'); // terminate with newline
         return 0;
     }
 
     try {
         const auto serialized = serdes::serialize(fields, opts_.delim, '\\');
         out << serialized;
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         out << "error: " << e.what() << "\n";
         return 1;
     }

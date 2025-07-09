@@ -1,5 +1,5 @@
 /**
-* \file serdes_app.hpp
+ * \file serdes_app.hpp
  * \brief Entry point class for the serialization/deserialization logic.
  *
  * This class encapsulates the runtime execution of the application after
@@ -19,21 +19,21 @@
  * deserialization command and executes it against standard input/output streams.
  */
 class SerDesApp {
-public:
+  public:
     /**
- * \brief Construct the application logic based on user options.
- * \param opts Immutable options struct produced by CLI parsing.
- * \throws std::logic_error if options contain unknown mode.
- */
-    explicit SerDesApp(const Options& opts);
+     * \brief Construct the application logic based on user options.
+     * \param opts Immutable options struct produced by CLI parsing.
+     * \throws std::logic_error if options contain unknown mode.
+     */
+    explicit SerDesApp(const Options &opts);
 
     /**
- * \brief Run the selected command.
- * \return Exit code: 0 on success, non-zero on error.
- */
-    int run();
+     * \brief Run the selected command.
+     * \return Exit code: 0 on success, non-zero on error.
+     */
+    auto run() const -> int;
 
-private:
+  private:
     /// The command to execute (serialization or deserialization).
     std::unique_ptr<ICommand> cmd_;
 };

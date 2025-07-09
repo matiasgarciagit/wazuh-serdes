@@ -1,5 +1,5 @@
 /**
-* \file options.hpp
+ * \file options.hpp
  * \brief Command-line options model.
  *
  * This file defines the runtime configuration model used to drive
@@ -13,15 +13,15 @@
  * \brief Options for serialization mode.
  */
 struct SerializeOptions {
-    char  delim           = ',';    // separator
-    bool  disable_escape  = false;  // not escape anything
+    char delim = ',';            // separator
+    bool disable_escape = false; // not escape anything
 };
 
 /**
  * \brief Options for deserialization mode.
  */
 struct DeserializeOptions {
-    char delim = ',';               // separator
+    char delim = ','; // separator
 };
 
 /**
@@ -35,9 +35,7 @@ enum class Mode { Serialize, Deserialize };
  * Wraps the selected mode and associated mode-specific configuration.
  */
 struct Options {
-    Mode                       mode; ///< Operation mode.
-    std::variant<
-      SerializeOptions,
-      DeserializeOptions
-    > opts;                         ///< Mode-specific options.
+    Mode mode; ///< Operation mode.
+    std::variant<SerializeOptions,
+                 DeserializeOptions> opts; ///< Mode-specific options.
 };

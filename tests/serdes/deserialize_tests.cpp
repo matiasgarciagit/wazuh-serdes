@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 TEST(DeserializeTest, ReversesEscaping) {
-    const std::string line = "a,b\\,c,d\\\\e,f\\ng,h\\ri";
+    const std::string line = R"(a,b\,c,d\\e,f\ng,h\ri)";
     const std::vector<std::string> expected = {"a", "b,c", "d\\e", "f\ng", "h\ri"};
     EXPECT_EQ(serdes::deserialize(line, ','), expected);
 }

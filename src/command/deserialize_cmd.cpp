@@ -1,16 +1,16 @@
 /**
-* \file deserialize_cmd.cpp
+ * \file deserialize_cmd.cpp
  * \brief Implementation of DeserializeCmd.
  */
 
 #include "command/deserialize_cmd.hpp"
 #include "serdes/serdes.hpp"
-#include <string>
 #include <iostream>
+#include <string>
 
-DeserializeCmd::DeserializeCmd(const DeserializeOptions &opts): opts_(opts) {}
+DeserializeCmd::DeserializeCmd(const DeserializeOptions &opts) : opts_(opts) {}
 
-int DeserializeCmd::execute(std::istream& in, std::ostream& out) {
+auto DeserializeCmd::execute(std::istream &in, std::ostream &out) -> int {
     // Read exactly one line of serialized input
     std::string line;
     if (!std::getline(in, line)) {
@@ -20,10 +20,10 @@ int DeserializeCmd::execute(std::istream& in, std::ostream& out) {
 
     try {
         const auto fields = serdes::deserialize(line, opts_.delim, '\\');
-        for (auto const& f : fields) {
+        for (const auto &f : fields) {
             out << f << '\n';
         }
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         out << "error: " << e.what() << "\n";
         return 1;
     }

@@ -1,5 +1,5 @@
 /**
-* \file deserialize_cmd.hpp
+ * \file deserialize_cmd.hpp
  * \brief Command for deserializing a single escaped input line into multiple fields.
  */
 
@@ -17,11 +17,11 @@
 class DeserializeCmd : public ICommand {
     DeserializeOptions opts_; ///< Options specific to deserialization mode.
 
-public:
+  public:
     /**
- * \brief Construct a deserialization command.
- * \param opts User-selected deserialization options.
- */
+     * \brief Construct a deserialization command.
+     * \param opts User-selected deserialization options.
+     */
     explicit DeserializeCmd(const DeserializeOptions &opts);
 
     /**
@@ -34,5 +34,5 @@ public:
      * \param out Output stream to write deserialized fields.
      * \return 0 on success, 1 on parsing error.
      */
-    int execute(std::istream &in, std::ostream &out) override;
+    auto execute(std::istream &in, std::ostream &out) -> int override;
 };

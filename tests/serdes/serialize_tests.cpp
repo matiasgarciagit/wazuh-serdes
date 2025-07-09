@@ -61,7 +61,7 @@ TEST(DeserializeTest, MixedCRLF) {
 }
 
 TEST(DeserializeTest, ComplexField) {
-    const std::string line = "\\\\\\,\\\\n\\\\r\\\\";
-    const std::vector<std::string> expected = {"\\,\\n\\r\\"};
+    const std::string line = R"(\\\,\\n\\r\\)";
+    const std::vector<std::string> expected = {R"(\,\n\r\)"};
     EXPECT_EQ(serdes::deserialize(line, ','), expected);
 }

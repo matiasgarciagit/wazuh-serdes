@@ -1,5 +1,5 @@
 /**
-* \file main.cpp
+ * \file main.cpp
  * \brief Entry-point for the SerDes utility.
  *
  * This file wires together command-line parsing and the core
@@ -22,12 +22,11 @@
  * \param argv Argument vector.
  * \return 0 on success, non-zero on failure.
  */
-int main(const int argc, char** argv)
-{
+auto main(const int argc, char **argv) -> int {
     try {
         const auto opts = Cli::parse(argc, argv);
         return SerDesApp{opts}.run();
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         std::cerr << "error: " << e.what() << "\n";
         return 1;
     }

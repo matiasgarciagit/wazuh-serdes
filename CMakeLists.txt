@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.14)
 project(wazuh-serdes VERSION 0.1.0 LANGUAGES CXX)
 
 # Compiler configuration
@@ -113,6 +113,39 @@ if (DOXYGEN_FOUND)
     )
 else()
     message(WARNING "Doxygen not found, 'docs' target will be unavailable")
+endif()
+
+#clang-format integration
+find_program(CLANG_FORMAT_EXE NAMES clang-format)
+if (CLANG_FORMAT_EXE)
+    file(GLOB_RECURSE ALL_CLANG_FORMAT_FILES
+            "${CMAKE_SOURCE_DIR}/src/*.cpp"
+            "${CMAKE_SOURCE_DIR}/src/*.hpp"
+            "${CMAKE_SOURCE_DIR}/include/*.hpp"
+    )
+
+    add_custom_target(format
+            COMMAND ${CLANG_FORMAT_EXE}
+            -i
+            -style=file
+            ${ALL_CLANG_FORMAT_FILES}
+            COMMENT "Applying clang-format to the entire codebase"
+            VERBATIM
+    )
+else()
+    message(WARNING "clang-format not found: target 'format' will not be available")
+endif()
+
+# clang-tidy Integration
+find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+if (CLANG_TIDY_EXE)
+    set(CMAKE_CXX_CLANG_TIDY
+            "${CLANG_TIDY_EXE};
+         -config-file=${CMAKE_SOURCE_DIR}/.clang-tidy;
+         -header-filter=include/.*"
+    )
+else()
+    message(WARNING "clang-tidy not found: static analysis disabled")
 endif()
 
 # tests

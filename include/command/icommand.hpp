@@ -1,5 +1,5 @@
 /**
-* \file icommand.hpp
+ * \file icommand.hpp
  * \brief Abstract command interface for serialization/deserialization operations.
  *
  * All commands operate on standard input/output streams and return a process exit code.
@@ -16,7 +16,7 @@
  * serialization or deserialization logic.
  */
 class ICommand {
-public:
+  public:
     virtual ~ICommand() = default;
 
     /**
@@ -26,5 +26,5 @@ public:
      * \param out Output stream to write to (usually std::cout).
      * \return Exit code: 0 = success, non-zero = failure.
      */
-    virtual int execute(std::istream& in, std::ostream& out) = 0;
+    virtual auto execute(std::istream &in, std::ostream &out) -> int = 0;
 };

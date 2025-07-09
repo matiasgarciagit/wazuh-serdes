@@ -1,7 +1,7 @@
 #include "options/cli/cli.hpp"
 #include <gtest/gtest.h>
 
-static std::vector<char*> make_argv(std::initializer_list<const char*> args) {
+static auto make_argv(std::initializer_list<const char*> args) ->std::vector<char*> {
     std::vector<char*> v;
     for (const auto s : args) v.push_back(const_cast<char*>(s));
     return v;
