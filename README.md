@@ -19,17 +19,18 @@ Delimiters (default `,`) and escaping (`\`) are fully configurable so that comma
 5. [Examples](#examples)
 6. [Testing](#testing)
 7. [Documentation](#documentation)
-8. [License](#license)
+8. [3rd Party Software Used](#3rd-party-software-used)
+9. [License](#license)
 
 ---
 
 ## Features
 
-- ✅ **Two modes**: `serialize` / `deserialize` subcommands
-- ✅ **Configurable delimiter** (`-d, --delim`, default `,`)
-- ✅ **Optional escaping** disable for raw joins (`--no-escape`)
-- ✅ **Handles** delimiter, newline (`\n`), carriage return (`\r`) and backslash (`\`) via reversible escape sequences
-- ✅ **Round-trip safe**: deserializing a serialized line yields the original fields
+-  **Two modes**: `serialize` / `deserialize` subcommands
+-  **Configurable delimiter** (`-d, --delim`, default `,`)
+-  **Optional escaping** disable for raw joins (`--no-escape`)
+-  **Handles** delimiter, newline (`\n`), carriage return (`\r`) and backslash (`\`) via reversible escape sequences
+-  **Round-trip safe**: deserializing a serialized line yields the original fields
 
 ---
 
@@ -132,10 +133,10 @@ Run `wazuh-serdes` with one of two subcommands:
 ### 4. Using a custom delimiter (before the subcommand)
 
 ```bash
-printf "one|two|three" | ./wazuh-serdes -d '|' serialize
+  printf "one|two|three" | ./wazuh-serdes -d '|' serialize
 # → one\|two\|three
 
-echo "one|two|three" | ./wazuh-serdes -d '|' deserialize
+  echo "one|two|three" | ./wazuh-serdes -d '|' deserialize
 # → one
 #   two
 #   three
@@ -151,7 +152,7 @@ echo "one|two|three" | ./wazuh-serdes -d '|' deserialize
 ### 6. Full round-trip
 
 ```bash
-printf '%s\n' "line1" "line,2" "line\3" "line" "4" | \
+  printf '%s\n' "line1" "line,2" "line\3" "line" "4" | \
   ./wazuh-serdes -d '|' serialize | \
   ./wazuh-serdes -d '|' deserialize
 # → line1
@@ -205,7 +206,7 @@ $ ./tests/serdes-tests
 ```
 ---
 
-## 7. Documentation
+## Documentation
 
 All API reference and design docs are generated with [Doxygen](https://www.doxygen.nl/) using the `Doxyfile` in the project root.
 
@@ -231,7 +232,7 @@ in your browser to browse the generated documentation.
 
 ---
 
-## 9. 3rd Party Software Used
+## 3rd Party Software Used
 
 | Software    | Description                        | License       | Version |
 |-------------|------------------------------------|---------------|---------|
@@ -240,7 +241,7 @@ in your browser to browse the generated documentation.
 
 ---
 
-## 10. License
+## License
 
 **Project License:** MIT License
 
