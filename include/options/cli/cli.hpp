@@ -6,7 +6,6 @@
  * the options structure (`Options`) that drives the application.
  */
 
-
 #pragma once
 #include "options/options.hpp"
 

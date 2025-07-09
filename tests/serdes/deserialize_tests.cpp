@@ -1,5 +1,5 @@
+#include "serdes/serdes.hpp"
 #include <gtest/gtest.h>
-#include <serdes/serdes.hpp>
 
 TEST(DeserializeTest, ReversesEscaping) {
     const std::string line = "a,b\\,c,d\\\\e,f\\ng,h\\ri";

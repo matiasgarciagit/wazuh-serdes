@@ -4,6 +4,7 @@
  *
  * All commands operate on standard input/output streams and return a process exit code.
  */
+
 #pragma once
 #include <ostream>
 

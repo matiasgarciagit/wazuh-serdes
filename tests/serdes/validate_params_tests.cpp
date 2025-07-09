@@ -1,5 +1,5 @@
+#include "serdes/serdes.hpp"
 #include <gtest/gtest.h>
-#include <serdes/serdes.hpp>
 
 TEST(ValidateParamsTest, ThrowsIfDelimEqualsEscape) {
     EXPECT_THROW(serdes::validate_params(',', ','), std::invalid_argument);

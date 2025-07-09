@@ -5,7 +5,6 @@
 
 #include "command/serialize_cmd.hpp"
 #include "serdes/serdes.hpp"
-
 #include <istream>
 #include <string>
 

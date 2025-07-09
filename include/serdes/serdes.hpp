@@ -6,7 +6,6 @@
  * delimiters, newlines, carriage returns, and backslashes.
  */
 
-
 #pragma once
 #include <string>
 #include <vector>

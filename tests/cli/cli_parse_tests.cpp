@@ -1,5 +1,5 @@
+#include "options/cli/cli.hpp"
 #include <gtest/gtest.h>
-#include <options/cli/cli.hpp>
 
 static std::vector<char*> make_argv(std::initializer_list<const char*> args) {
     std::vector<char*> v;

@@ -1,5 +1,5 @@
+#include "command/serialize_cmd.hpp"
 #include <gtest/gtest.h>
-#include <command/serialize_cmd.hpp>
 #include <sstream>
 
 TEST(SerializeCmdTest, DefaultBehavior) {

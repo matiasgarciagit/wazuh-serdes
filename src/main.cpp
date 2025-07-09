@@ -6,10 +6,9 @@
  * serializer/deserializer application object (`SerDesApp`).
  */
 
-#include <iostream>
-
 #include "options/cli/cli.hpp"
 #include "serdes/serdes_app.hpp"
+#include <iostream>
 
 /**
  * \brief Program entry-point.

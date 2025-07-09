@@ -6,7 +6,6 @@
 #include "serdes/serdes_app.hpp"
 #include "command/serialize_cmd.hpp"
 #include "command/deserialize_cmd.hpp"
-
 #include <iostream>
 
 

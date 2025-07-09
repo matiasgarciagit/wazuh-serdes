@@ -1,5 +1,5 @@
+#include "command/deserialize_cmd.hpp"
 #include <gtest/gtest.h>
-#include <command/deserialize_cmd.hpp>
 #include <sstream>
 
 TEST(DeserializeCmdTest, BasicSplit) {

@@ -1,9 +1,7 @@
+#include "serdes/serdes.hpp"
+#include "command/serialize_cmd.hpp"
+#include "command/deserialize_cmd.hpp"
 #include <gtest/gtest.h>
-
-#include <serdes/serdes.hpp>
-#include <command/serialize_cmd.hpp>
-#include <command/deserialize_cmd.hpp>
-
 #include <sstream>
 #include <vector>
 #include <string>

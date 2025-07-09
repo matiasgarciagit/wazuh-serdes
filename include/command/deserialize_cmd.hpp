@@ -2,6 +2,7 @@
 * \file deserialize_cmd.hpp
  * \brief Command for deserializing a single escaped input line into multiple fields.
  */
+
 #pragma once
 #include "command/icommand.hpp"
 #include "options/options.hpp"

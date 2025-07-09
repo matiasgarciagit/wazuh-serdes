@@ -1,6 +1,6 @@
+#include "serdes/serdes.hpp"
 #include <stdexcept>
 #include <gtest/gtest.h>
-#include <serdes/serdes.hpp>
 
 TEST(SerializeTest, EscapesSpecialCharacters) {
     std::vector<std::string> fields = {"a", "b,c", "d\\e", "f\ng", "h\ri"};
