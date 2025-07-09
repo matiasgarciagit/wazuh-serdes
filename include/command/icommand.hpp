@@ -1,5 +1,5 @@
 /**
-* \file command.hpp
+* \file icommand.hpp
  * \brief Abstract command interface for serialization/deserialization operations.
  *
  * All commands operate on standard input/output streams and return a process exit code.
