@@ -15,9 +15,15 @@
  * each field on a separate line to output.
  */
 class DeserializeCmd : public ICommand {
-    DeserializeOptions opts_; ///< Options specific to deserialization mode.
-
   public:
+    DeserializeCmd() = default;
+
+    /**
+     * \brief Declare deserialization-specific flags/options.
+     * \param sub  CLI11 subcommand to attach options to.
+     */
+    void configure(CLI::App &sub) override;
+
     /**
      * \brief Construct a deserialization command.
      * \param opts User-selected deserialization options.
@@ -35,4 +41,8 @@ class DeserializeCmd : public ICommand {
      * \return 0 on success, 1 on parsing error.
      */
     auto execute(std::istream &in, std::ostream &out) -> int override;
+
+  private:
+    char delim_ = ',';        ///< Field delimiter
+    char escape_char_ = '\\'; ///< Escape character
 };

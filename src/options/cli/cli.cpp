@@ -12,6 +12,7 @@
 #include "app/version.hpp"
 #include <CLI/CLI.hpp>
 #include <CLI/Error.hpp>
+#include <CLI/Validators.hpp>
 #include <cstdlib>
 
 namespace Cli {

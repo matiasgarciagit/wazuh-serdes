@@ -15,14 +15,19 @@
  * and joins them using the configured delimiter.
  */
 class SerializeCmd : public ICommand {
-    SerializeOptions opts_; ///< Options specific to serialization mode.
-
   public:
+    SerializeCmd() = default;
+
     /**
-     * \brief Construct a serialization command.
-     * \param opts User-selected serialization options.
+     * \brief Declare serialization-specific flags/options.
+     * \param sub  CLI11 subcommand to attach options to.
+     *
+     * Options:
+     *  - -d, --delim CHAR     Field delimiter character (default ',')
+     *  - -e, --escape CHAR    Escape character (default '\\')
+     *  -     --no-escape      Disable escaping entirely
      */
-    explicit SerializeCmd(const SerializeOptions &opts);
+    void configure(CLI::App &sub) override;
 
     /**
      * \brief Execute serialization from input to output.
@@ -35,4 +40,9 @@ class SerializeCmd : public ICommand {
      * \return 0 on success, 1 on configuration or logic error.
      */
     auto execute(std::istream &in, std::ostream &out) -> int override;
+
+  private:
+    char delim_ = ',';        ///< Character used to delimit fields.
+    char escape_char_ = '\\'; ///< Character used to escape special chars.
+    bool no_escape_ = false;  ///< If true, do not apply any escaping.
 };

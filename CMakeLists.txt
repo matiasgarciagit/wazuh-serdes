@@ -56,29 +56,28 @@ add_library(libcommand STATIC
         src/command/serialize_cmd.cpp
         src/command/deserialize_cmd.cpp
 )
-target_link_libraries(libcommand PUBLIC libserdes)
+
+# Pull in core + CLI11 for configure()/execute()
+target_link_libraries(libcommand
+        PUBLIC libserdes
+        CLI11::CLI11
+)
 target_include_directories(libcommand PUBLIC
         ${PROJECT_SOURCE_DIR}/include
         ${CMAKE_BINARY_DIR}/include
 )
 target_compile_options(libcommand PRIVATE ${PROJECT_WARNINGS})
 
-# libcli: CLI parser (CLI11)
-add_library(libcli STATIC
-        src/options/cli/cli.cpp
-)
-target_link_libraries(libcli PUBLIC CLI11::CLI11)
-target_include_directories(libcli PUBLIC
-        ${PROJECT_SOURCE_DIR}/include
-        ${CMAKE_BINARY_DIR}/include
-)
-target_compile_options(libcli PRIVATE ${PROJECT_WARNINGS})
 
 # libapp: application coordinator
 add_library(libapp STATIC
         src/serdes/serdes_app.cpp
 )
-target_link_libraries(libapp PUBLIC libcommand libcli)
+
+target_link_libraries(libapp
+        PUBLIC libcommand
+        CLI11::CLI11
+)
 target_include_directories(libapp PUBLIC
         ${PROJECT_SOURCE_DIR}/include
         ${CMAKE_BINARY_DIR}/include

@@ -6,18 +6,25 @@
  */
 
 #pragma once
-#include <ostream>
+
+#include <CLI/CLI.hpp>
 
 /**
  * \class ICommand
  * \brief Base interface for all executable commands.
  *
  * This abstraction is used by the application controller to delegate the actual
- * serialization or deserialization logic.
+ * command logic
  */
 class ICommand {
   public:
     virtual ~ICommand() = default;
+
+    /**
+     * \brief Declare flags and options for this subcommand.
+     * \param sub  CLI11 subcommand to attach options to.
+     */
+    virtual void configure(CLI::App &sub) = 0;
 
     /**
      * \brief Execute the command logic.

@@ -8,24 +8,38 @@
 #include <iostream>
 #include <string>
 
-DeserializeCmd::DeserializeCmd(const DeserializeOptions &opts) : opts_(opts) {}
+void DeserializeCmd::configure(CLI::App &sub) {
+    sub.add_option("-d,--delim", delim_, "Field delimiter character (default ',')")
+        ->type_name("CHAR")
+        ->check(CLI::IsMember(std::vector<char>{',', '|', ';', '\t'}));
+    sub.add_option("-e,--escape", escape_char_, "Escape character (default '\\')")
+        ->type_name("CHAR");
+}
 
 auto DeserializeCmd::execute(std::istream &in, std::ostream &out) -> int {
-    // Read exactly one line of serialized input
+    try {
+        serdes::validate_params(delim_, escape_char_);
+    } catch (const std::exception &ex) {
+        std::cerr << "error: " << ex.what() << "\n";
+        return 1;
+    }
+
     std::string line;
     if (!std::getline(in, line)) {
-        // Nothing to process
+        // nothing to deserialize
         return 0;
     }
 
+    std::vector<std::string> fields;
     try {
-        const auto fields = serdes::deserialize(line, opts_.delim, '\\');
-        for (const auto &f : fields) {
-            out << f << '\n';
-        }
-    } catch (const std::exception &e) {
-        out << "error: " << e.what() << "\n";
+        fields = serdes::deserialize(line, delim_, escape_char_);
+    } catch (const std::exception &ex) {
+        std::cerr << "error: " << ex.what() << "\n";
         return 1;
+    }
+
+    for (auto &f : fields) {
+        out << f << "\n";
     }
     return 0;
 }

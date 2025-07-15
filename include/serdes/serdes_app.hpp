@@ -7,33 +7,48 @@
  */
 
 #pragma once
+
 #include "command/icommand.hpp"
-#include "options/options.hpp"
-#include <memory>
+#include <CLI/CLI.hpp>
+#include <string_view>
 
 /**
  * \class SerDesApp
- * \brief Application-level controller that selects and runs the appropriate command.
+ * \brief Application-level controller for registering and executing commands.
  *
- * Based on the parsed options, this class instantiates either a serialization or
- * deserialization command and executes it against standard input/output streams.
+ * SerDesApp holds a CLI11 parser, lets you register any number of
+ * ICommand-backed subcommands, and dispatches to the chosen one
+ * after parsing argc/argv.
  */
 class SerDesApp {
   public:
     /**
-     * \brief Construct the application logic based on user options.
-     * \param opts Immutable options struct produced by CLI parsing.
-     * \throws std::logic_error if options contain unknown mode.
+     * \brief Construct the application parser.
+     * \param name        Program name shown in help (default "wazuh-serdes").
+     * \param description Short description shown in help.
      */
-    explicit SerDesApp(const Options &opts);
+    explicit SerDesApp(std::string_view name = "wazuh-serdes",
+                       std::string_view description = "Serialize and deserialize text fields");
 
     /**
-     * \brief Run the selected command.
+     * \brief Register a new subcommand.
+     * \param name        Subcommand name (e.g. "serialize").
+     * \param description Help text for this subcommand.
+     * \param command     Reference to an ICommand implementation.
+     *
+     * This will create a CLI11 subcommand, call command.configure(sub),
+     * and hook sub->callback() to command.execute().
+     */
+    void register_command(std::string_view name, std::string_view description, ICommand &command);
+
+    /**
+     * \brief Parse command-line arguments and execute the selected subcommand.
+     * \param argc Argument count from main().
+     * \param argv Argument vector from main().
      * \return Exit code: 0 on success, non-zero on error.
      */
-    auto run() const -> int;
+    auto run(int argc, char **argv) -> int;
 
   private:
-    /// The command to execute (serialization or deserialization).
-    std::unique_ptr<ICommand> cmd_;
+    CLI::App app_; ///< Underlying CLI11 app for parsing and help
 };

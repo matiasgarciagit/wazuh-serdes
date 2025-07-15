@@ -6,6 +6,8 @@
  * serializer/deserializer application object (`SerDesApp`).
  */
 
+#include "command/deserialize_cmd.hpp"
+#include "command/serialize_cmd.hpp"
 #include "options/cli/cli.hpp"
 #include "serdes/serdes_app.hpp"
 #include <iostream>
@@ -23,11 +25,30 @@
  * \return 0 on success, non-zero on failure.
  */
 auto main(const int argc, char **argv) -> int {
-    try {
-        const auto opts = Cli::parse(argc, argv);
-        return SerDesApp{opts}.run();
-    } catch (const std::exception &e) {
-        std::cerr << "error: " << e.what() << "\n";
-        return 1;
+    SerDesApp app;
+
+    // instantiate commands with default options
+    // (default delimiter = ',', default escape_char = '\\')
+    SerializeCmd serializeCmd{};
+    DeserializeCmd deserializeCmd{};
+
+    struct CommandEntry {
+        std::string_view name;
+        std::string_view description;
+        ICommand &command;
+    };
+
+    const std::array<CommandEntry, 2> commands{
+        {{.name = "serialize",
+          .description = "Read lines from stdin and write a single serialized line",
+          .command = serializeCmd},
+         {.name = "deserialize",
+          .description = "Read a serialized line from stdin and write one field per line",
+          .command = deserializeCmd}}};
+
+    for (auto const &[name, description, command] : commands) {
+        app.register_command(name, description, command);
     }
+
+    return app.run(argc, argv);
 }
