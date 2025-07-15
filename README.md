@@ -37,7 +37,7 @@ Delimiters (default `,`) and escaping (`\`) are fully configurable so that comma
 ## Prerequisites
 
 - A C++20-capable compiler (GCC 11+, Clang 11+, MSVC 2019+)
-- [CMake](https://cmake.org/) ≥ 3.31
+- [CMake](https://cmake.org/) ≥ 3.14
 - Internet access (to fetch [CLI11](https://github.com/CLIUtils/CLI11) and [GoogleTest](https://github.com/google/googletest))
 - (Optional) [Doxygen](https://www.doxygen.nl/) if you want to generate the HTML documentation
 
