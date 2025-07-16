@@ -26,7 +26,8 @@ jobs:
             cmake \
             ninja-build \
             build-essential \
-            libgtest-dev
+            slightest-dev \
+            doxygen
 
       # Configure the project with CMake
       - name: Configure with CMake
