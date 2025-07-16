@@ -26,7 +26,6 @@ jobs:
             cmake \
             ninja-build \
             build-essential \
-            slightest-dev \
             doxygen
 
       # Configure the project with CMake
