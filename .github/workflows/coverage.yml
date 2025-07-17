@@ -44,9 +44,15 @@ jobs:
       - name: Capture coverage data
         run: |
           # Collect raw coverage data from the instrumented build
-          lcov --directory build --capture --output-file coverage.info
+            lcov --directory build \
+            --capture \
+            --output-file coverage.info \
+            --ignore-errors mismatch
           # Strip out system headers and test code to focus on src/ and include/
-          lcov --remove coverage.info '/usr/*' '*/tests/*' --output-file coverage.filtered.info
+          lcov --remove coverage.info \
+            '/usr/*' '*/tests/*' \
+            --output-file coverage.filtered.info \
+            --ignore-errors mismatch
 
       - name: Generate HTML coverage report
         run: |
