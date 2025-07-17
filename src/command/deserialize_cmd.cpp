@@ -26,7 +26,7 @@ auto DeserializeCmd::execute(std::istream &in, std::ostream &out) -> int {
 
     std::string line;
     if (!std::getline(in, line)) {
-        // nothing to deserialize
+        // Nothing to process
         return 0;
     }
 

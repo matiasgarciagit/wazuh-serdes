@@ -1,0 +1,52 @@
+name: Static Analysis (clang-tidy)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  clang-tidy:
+    name: Run clang-tidy checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install clang-tidy
+        run: |
+          # Update package lists
+          sudo apt-get update
+          # Install the clang-tidy package
+          sudo apt-get install -y clang-tidy
+
+      - name: Generate compile commands
+        run: |
+          # Configure the project and export compile_commands.json
+          cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Confirm clang-tidy version
+        run: |
+          # Verify the installed clang-tidy version
+          clang-tidy --version
+
+      - name: Run static analysis
+        run: |
+          # Gather all C/C++ source and header files tracked by git
+          FILES=$(git ls-files | grep -E '\.(c|cpp|cc|cxx|h|hpp)$')
+          if [ -z "$FILES" ]; then
+            echo "No source files found, skipping."
+            exit 0
+          fi
+
+          # Run clang-tidy on each file using the compile_commands.json and .clang-tidy config
+          for f in $FILES; do
+            echo "::group::Analyzing $f"
+            clang-tidy "$f" \
+              --config-file=.clang-tidy \
+              --header-filter=include/.* \
+              -p build
+            echo "::endgroup::"
+          done

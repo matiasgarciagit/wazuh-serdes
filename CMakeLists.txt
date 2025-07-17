@@ -96,7 +96,7 @@ target_include_directories(wazuh-serdes PRIVATE
 target_compile_options(wazuh-serdes PRIVATE ${PROJECT_WARNINGS})
 
 #Documentation (Doxygen)
-find_package(Doxygen REQUIRED)
+find_package(Doxygen QUIET)
 
 if (DOXYGEN_FOUND)
     set(DOXYFILE_IN     ${CMAKE_SOURCE_DIR}/Doxyfile)
@@ -121,6 +121,7 @@ if (CLANG_FORMAT_EXE)
             "${CMAKE_SOURCE_DIR}/src/*.cpp"
             "${CMAKE_SOURCE_DIR}/src/*.hpp"
             "${CMAKE_SOURCE_DIR}/include/*.hpp"
+            "${CMAKE_SOURCE_DIR}/tests/*.cpp"
     )
 
     add_custom_target(format

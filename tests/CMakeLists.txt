@@ -1,4 +1,4 @@
-# 1) SerDes core tests
+# SerDes core tests
 file(GLOB SERDES_TEST_SOURCES
         serdes/serialize_tests.cpp
         serdes/deserialize_tests.cpp
@@ -18,7 +18,7 @@ target_link_libraries(serdes-tests
 )
 add_test(NAME SerDesCoreTests COMMAND serdes-tests)
 
-# 2) Command layer tests
+# Command layer tests
 file(GLOB COMMAND_TEST_SOURCES
         commands/serialize_cmd_tests.cpp
         commands/deserialize_cmd_tests.cpp
@@ -36,7 +36,7 @@ target_link_libraries(command-tests
 )
 add_test(NAME CommandLayerTests COMMAND command-tests)
 
-# 3) CLI parser tests
+# CLI parser tests
 file(GLOB CLI_TEST_SOURCES
         cli/cli_parse_tests.cpp
 )
