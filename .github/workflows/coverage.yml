@@ -48,9 +48,13 @@ jobs:
             --capture \
             --output-file coverage.info \
             --ignore-errors mismatch
+          
           # Strip out system headers and test code to focus on src/ and include/
-          lcov --extract coverage.info \
-            '*/src/*' '*/include/*' \
+          lcov --remove coverage.info \
+            '/usr/*' \
+            '*/tests/*' \
+            '*/_deps/*' \
+            '*build*/*' \
             --output-file coverage.filtered.info
 
       - name: Generate HTML coverage report
