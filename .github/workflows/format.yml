@@ -21,15 +21,17 @@ jobs:
           sudo apt-get update
           # Install the specific clang-format-19 package
           sudo apt-get install -y clang-format-19
-          # Make 'clang-format' point to clang-format-19 by default
+          # Register clang-format-19 as an alternative...
           sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-19 100
+          # ...and actually select it as the default
+          sudo update-alternatives --set clang-format /usr/bin/clang-format-19
 
       - name: Confirm clang-format version
         run: |
-          # Print out the version to verify it's the one we installed
+          # Verify that 'clang-format' is now version 19.x
           clang-format --version
 
-      - name: Check code formatting
+      - name: Check code formatting (using default clang-format)
         run: |
           # Collect all tracked source and header files
           FILES=$(git ls-files | grep -E '\.(c|cpp|cc|cxx|h|hpp)$')
@@ -37,7 +39,7 @@ jobs:
             echo "No source files found, skipping."
             exit 0
           fi
-          # For each file, run clang-format in dry-run mode and fail on any mismatch
+          # For each file, run clang-format in dry-run mode and fail on mismatch
           for f in $FILES; do
             echo "::group::Checking $f"
             clang-format --style=file --dry-run --Werror "$f"
