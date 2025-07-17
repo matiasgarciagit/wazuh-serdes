@@ -1,0 +1,77 @@
+name: Code Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  coverage:
+    name: Generate and verify code coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install coverage tools
+        run: |
+          # Update apt cache and install lcov & genhtml for coverage reporting
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
+      - name: Configure project with coverage flags
+        run: |
+          # Generate compile_commands.json, enable testing, and add coverage instrumentation
+          cmake -S . -B build \
+            -DBUILD_TESTING=ON \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_CXX_FLAGS="--coverage" \
+            -DCMAKE_EXE_LINKER_FLAGS="--coverage"
+
+      - name: Build all targets
+        run: |
+          # Build main binary and all test executables in parallel
+          cmake --build build --parallel
+
+      - name: Run unit tests
+        run: |
+          # Execute every test registered with add_test() via CTest
+          cd build
+          ctest --output-on-failure
+
+      - name: Capture coverage data
+        run: |
+          # Collect raw coverage data from the instrumented build
+          lcov --directory build --capture --output-file coverage.info
+          # Strip out system headers and test code to focus on src/ and include/
+          lcov --remove coverage.info '/usr/*' '*/tests/*' --output-file coverage.filtered.info
+
+      - name: Generate HTML coverage report
+        run: |
+          # Produce a browsable HTML report in build/coverage-report
+          genhtml coverage.filtered.info --output-directory coverage-report
+
+      - name: Check minimum coverage (80%)
+        run: |
+          # Extract total line coverage percentage
+          COVERAGE=$(lcov --summary coverage.filtered.info \
+            | grep 'lines.*:' \
+            | awk '{print $2}' \
+            | sed 's/%//')
+          echo "Line coverage is $COVERAGE%"
+
+          # Fail the job if coverage is under 80%
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "ERROR: Coverage ($COVERAGE%) is below the required threshold of 80%."
+            exit 1
+          fi
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          # Archive the HTML report so you can download it from GitHub
+          name: coverage-report
+          path: coverage-report/
