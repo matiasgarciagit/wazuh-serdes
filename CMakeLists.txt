@@ -119,11 +119,9 @@ endif()
 find_program(CLANG_FORMAT_EXE NAMES clang-format)
 if (CLANG_FORMAT_EXE)
     file(GLOB_RECURSE ALL_CLANG_FORMAT_FILES
-            "${CMAKE_SOURCE_DIR}/*.cpp"
-            "${CMAKE_SOURCE_DIR}/*.cxx"
-            "${CMAKE_SOURCE_DIR}/*.cc"
-            "${CMAKE_SOURCE_DIR}/*.h"
-            "${CMAKE_SOURCE_DIR}/*.hpp"
+            "${CMAKE_SOURCE_DIR}/src/*.cpp"
+            "${CMAKE_SOURCE_DIR}/src/*.hpp"
+            "${CMAKE_SOURCE_DIR}/include/*.hpp"
     )
 
     add_custom_target(format
@@ -137,6 +135,11 @@ if (CLANG_FORMAT_EXE)
 else()
     message(WARNING "clang-format not found: target 'format' will not be available")
 endif()
+
+foreach(f IN LISTS ALL_CLANG_FORMAT_FILES)
+    message(STATUS "→ clang-format will process: ${f}")
+endforeach()
+
 
 # clang-tidy Integration
 find_program(CLANG_TIDY_EXE NAMES clang-tidy)

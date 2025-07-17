@@ -12,26 +12,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install clang-format
-      - name: Install clang-format
+      - name: Install clang-format-19
         run: |
+          # Update package lists
           sudo apt-get update
-          sudo apt-get install -y clang-format
+          # Install the specific clang-format-19 package
+          sudo apt-get install -y clang-format-19
+          # Make 'clang-format' point to clang-format-19 by default
+          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-19 100
 
-      # Run format check
+      - name: Confirm clang-format version
+        run: |
+          # Print out the version to verify it's the one we installed
+          clang-format --version
+
       - name: Check code formatting
         run: |
-          # Gather all version-controlled source and header files
+          # Collect all tracked source and header files
           FILES=$(git ls-files | grep -E '\.(c|cpp|cc|cxx|h|hpp)$')
           if [ -z "$FILES" ]; then
             echo "No source files found, skipping."
             exit 0
           fi
-          # For each file, run clang-format in dry-run mode and error on mismatch
+          # For each file, run clang-format in dry-run mode and fail on any mismatch
           for f in $FILES; do
             echo "::group::Checking $f"
             clang-format --style=file --dry-run --Werror "$f"
