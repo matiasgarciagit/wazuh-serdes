@@ -39,7 +39,6 @@ jobs:
       - name: Run unit tests
         run: |
           # Execute every test registered with add_test() via CTest
-          cd build
           ninja -C build test
 
       - name: Capture coverage data
