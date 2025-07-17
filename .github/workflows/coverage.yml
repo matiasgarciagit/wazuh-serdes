@@ -55,7 +55,7 @@ jobs:
             '*/tests/*' \
             '*/_deps/*' \
             '*/build/*' \
-            --ignore-errors unused
+            --ignore-errors unused \
             --output-file coverage.filtered.info
 
       - name: Generate HTML coverage report
