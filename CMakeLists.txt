@@ -122,6 +122,7 @@ if (CLANG_FORMAT_EXE)
             "${CMAKE_SOURCE_DIR}/src/*.cpp"
             "${CMAKE_SOURCE_DIR}/src/*.hpp"
             "${CMAKE_SOURCE_DIR}/include/*.hpp"
+            "${CMAKE_SOURCE_DIR}/tests/*.cpp"
     )
 
     add_custom_target(format
@@ -135,11 +136,6 @@ if (CLANG_FORMAT_EXE)
 else()
     message(WARNING "clang-format not found: target 'format' will not be available")
 endif()
-
-foreach(f IN LISTS ALL_CLANG_FORMAT_FILES)
-    message(STATUS "→ clang-format will process: ${f}")
-endforeach()
-
 
 # clang-tidy Integration
 find_program(CLANG_TIDY_EXE NAMES clang-tidy)
