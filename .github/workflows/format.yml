@@ -1,0 +1,39 @@
+name: Format Check (clang-format)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  clang-format:
+    name: Verify code style
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install clang-format
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+
+      # Run format check
+      - name: Check code formatting
+        run: |
+          # Gather all version-controlled source and header files
+          FILES=$(git ls-files | grep -E '\.(c|cpp|cc|cxx|h|hpp)$')
+          if [ -z "$FILES" ]; then
+            echo "No source files found, skipping."
+            exit 0
+          fi
+          # For each file, run clang-format in dry-run mode and error on mismatch
+          for f in $FILES; do
+            echo "::group::Checking $f"
+            clang-format --style=file --dry-run --Werror "$f"
+            echo "::endgroup::"
+          done

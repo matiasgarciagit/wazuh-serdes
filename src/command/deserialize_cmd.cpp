@@ -14,7 +14,6 @@ auto DeserializeCmd::execute(std::istream &in, std::ostream &out) -> int {
     // Read exactly one line of serialized input
     std::string line;
     if (!std::getline(in, line)) {
-        // Nothing to process
         return 0;
     }
 
