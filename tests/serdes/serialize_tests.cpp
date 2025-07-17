@@ -1,6 +1,6 @@
 #include "serdes/serdes.hpp"
-#include <stdexcept>
 #include <gtest/gtest.h>
+#include <stdexcept>
 
 TEST(SerializeTest, EscapesSpecialCharacters) {
     std::vector<std::string> fields = {"a", "b,c", "d\\e", "f\ng", "h\ri"};
@@ -20,14 +20,10 @@ TEST(SerializeTest, SingleEmptyFieldProducesJustNewline) {
 
 TEST(SerializeTest, InvalidParamsThrows) {
     EXPECT_NO_THROW(serdes::serialize({"foo"}, ',', '\\'));
-    EXPECT_THROW(serdes::serialize({"foo"}, '\\', '\\'),
-                 std::invalid_argument);
-    EXPECT_THROW(serdes::serialize({"foo"}, '\n', '\\'),
-                 std::invalid_argument);
-    EXPECT_THROW(serdes::serialize({"foo"}, '\r', '\\'),
-                 std::invalid_argument);
-    EXPECT_THROW(serdes::serialize({"foo"}, '\x01', '\\'),
-                 std::invalid_argument);
+    EXPECT_THROW(serdes::serialize({"foo"}, '\\', '\\'), std::invalid_argument);
+    EXPECT_THROW(serdes::serialize({"foo"}, '\n', '\\'), std::invalid_argument);
+    EXPECT_THROW(serdes::serialize({"foo"}, '\r', '\\'), std::invalid_argument);
+    EXPECT_THROW(serdes::serialize({"foo"}, '\x01', '\\'), std::invalid_argument);
 }
 
 TEST(DeserializeTest, ConsecutiveDelimiters) {

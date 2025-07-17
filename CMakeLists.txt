@@ -119,9 +119,11 @@ endif()
 find_program(CLANG_FORMAT_EXE NAMES clang-format)
 if (CLANG_FORMAT_EXE)
     file(GLOB_RECURSE ALL_CLANG_FORMAT_FILES
-            "${CMAKE_SOURCE_DIR}/src/*.cpp"
-            "${CMAKE_SOURCE_DIR}/src/*.hpp"
-            "${CMAKE_SOURCE_DIR}/include/*.hpp"
+            "${CMAKE_SOURCE_DIR}/*.cpp"
+            "${CMAKE_SOURCE_DIR}/*.cxx"
+            "${CMAKE_SOURCE_DIR}/*.cc"
+            "${CMAKE_SOURCE_DIR}/*.h"
+            "${CMAKE_SOURCE_DIR}/*.hpp"
     )
 
     add_custom_target(format
